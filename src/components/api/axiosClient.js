@@ -1,15 +1,15 @@
-import axios from "axios";
-import StorageKeys from "components/constant/storage-keys";
-import jwt_decode from "jwt-decode";
-import dayjs from "dayjs";
-import axiosPrivate from "./axiosPrivate";
+import axios from 'axios';
+import StorageKeys from 'components/constant/storage-keys';
+import jwt_decode from 'jwt-decode';
+import dayjs from 'dayjs';
+import axiosPrivate from './axiosPrivate';
 
-const baseURL = "http://localhost:8080/api/";
+const baseURL = 'https://app-shoes-nlu.herokuapp.com/api/';
 
 const axiosClient = axios.create({
   baseURL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
@@ -20,9 +20,9 @@ axiosClient.interceptors.request.use(
   async function (config) {
     // Do something before request is sent
     if (
-      config.url.indexOf("/login") >= 0 ||
-      config.url.indexOf("/token/refresh") >= 0 ||
-      config.url.indexOf("/logout") >= 0
+      config.url.indexOf('/login') >= 0 ||
+      config.url.indexOf('/token/refresh') >= 0 ||
+      config.url.indexOf('/logout') >= 0
     ) {
       return config;
     }
@@ -38,7 +38,7 @@ axiosClient.interceptors.request.use(
     if (!isExprired) return config;
 
     try {
-      const response = await axiosPrivate.get("token/refresh");
+      const response = await axiosPrivate.get('token/refresh');
       if (response.status === 200) {
         const newToken = response.data.data.accessToken;
         localStorage.setItem(StorageKeys.TOKEN, newToken);
